@@ -33,7 +33,7 @@ class Login(QWidget):
         users = Helper.get_all_users()
         dipendenti = Helper.get_all_dipendenti()
 
-        if self.line_username.text() == "admin" and self.line_password.text() == "admin":
+        if self.line_username.text() == "admin" and self.line_password.text() == "R01mkWgY":
             self.dipendenti_table = DipendentiTable()
             self.dipendenti_table.show()
             return self.close()

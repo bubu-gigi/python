@@ -39,8 +39,8 @@ class ProgettoForm(QDialog):
         self.remove_dipendente = self.findChild(QPushButton, "button_remove_dipendente")
         #azzera filtri
 
-        tipologia_list = ["gara", "progetto operativo", "progetto di ricerca", "progetto interno"]
-        stato_list = ["in corso", "in standby", "da avviare", "chiuso"]
+        tipologia_list = ["gara", "progetto operativo", "progetto interno"]
+        stato_list = ["in corso", "da avviare", "chiuso"]
 
         self.tipologia.addItems(tipologia_list)
         self.stato.addItems(stato_list)

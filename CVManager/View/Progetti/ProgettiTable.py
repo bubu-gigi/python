@@ -25,12 +25,12 @@ class ProgettiTable(QWidget):
         self.search.textChanged.connect(self.update_ui)
 
         self.tipologia = self.findChild(QComboBox, "combobox_tipologia_progetti")
-        tipologia_list = ["tutti", "progetto operativo", "progetto di ricerca", "gara"]
+        tipologia_list = ["tutti", "progetto operativo", "progetto interno", "gara"]
         self.tipologia.addItems(tipologia_list)
         self.tipologia.currentTextChanged.connect(self.update_ui)
 
         self.stato = self.findChild(QComboBox, "combobox_stato_progetti")
-        stato_list = ["tutti", "in corso", "in standby", "da avviare", "chiuso"]
+        stato_list = ["tutti", "in corso", "da avviare", "chiuso"]
         self.stato.addItems(stato_list)
         self.stato.currentTextChanged.connect(self.update_ui)
 
