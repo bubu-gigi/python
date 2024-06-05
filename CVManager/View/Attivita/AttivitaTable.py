@@ -66,13 +66,14 @@ class AttivitaTable(QWidget):
 
     def update_ui(self):
         self.attivita = self.gestore_curriculum.ricerca_curriculum_attivita(self.curriculum.get_dipendente_matricola())
-        self.table.setRowCount(len(self.attivita))
         if self.attivita is not None:
-            row = 0
-            for attivita in self.attivita:
-                self.table.setItem(row, 0, QTableWidgetItem(str(attivita.get_id())))
-                self.table.setItem(row, 1, QTableWidgetItem(attivita.get_azienda()))
-                self.table.setItem(row, 2, QTableWidgetItem(attivita.get_periodo()))
-                self.table.setItem(row, 3, QTableWidgetItem(attivita.get_progetto()))
-                self.table.setItem(row, 4, QTableWidgetItem(attivita.get_descrizione()))
-                row += 1
+            self.table.setRowCount(len(self.attivita))
+            if self.attivita is not None:
+                row = 0
+                for attivita in self.attivita:
+                    self.table.setItem(row, 0, QTableWidgetItem(str(attivita.get_id())))
+                    self.table.setItem(row, 1, QTableWidgetItem(attivita.get_azienda()))
+                    self.table.setItem(row, 2, QTableWidgetItem(attivita.get_periodo()))
+                    self.table.setItem(row, 3, QTableWidgetItem(attivita.get_progetto()))
+                    self.table.setItem(row, 4, QTableWidgetItem(attivita.get_descrizione()))
+                    row += 1

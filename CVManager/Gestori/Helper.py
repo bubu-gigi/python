@@ -3,6 +3,7 @@ import pickle
 
 
 class Helper:
+
     @staticmethod
     def get_all_lingue():
         if os.path.isfile('Dati/Lingue.pickle'):

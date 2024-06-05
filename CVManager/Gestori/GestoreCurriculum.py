@@ -34,8 +34,12 @@ class GestoreCurriculum:
             if self.attivita is not None:
                 for att in self.attivita.values():
                     if int(att.get_curriculum_matricola()) == int(dipendente_matricola):
-                        attivita_list_returned.append(att)
+                        attivita_list_returned = self.__aggiungi_attivita_alla_lista(attivita_list_returned, att)
             return attivita_list_returned
+
+    def __aggiungi_attivita_alla_lista(self, attivita_list, attivita):
+        attivita_list = attivita_list.append(attivita)
+        return attivita_list
 
     def ricerca_curriculum_lingue(self, dipendente_matricola: int):
         self.curriculum = Helper.get_all_curriculum()
@@ -46,8 +50,12 @@ class GestoreCurriculum:
             if self.lingue is not None:
                 for lingua in self.lingue.values():
                     if int(lingua.get_curriculum_matricola()) == int(dipendente_matricola):
-                        lingue_list_returned.append(lingua)
+                        lingue_list_returned = self.__aggiungi_lingua_alla_lista(lingue_list_returned, lingua)
             return lingue_list_returned
+
+    def __aggiungi_lingua_alla_lista(self, lingue_list, lingua):
+        lingue_list = lingue_list.append(lingua)
+        return lingue_list
 
     def salva_curriculum(self, dipendente_matricola, funzione, esperienza, sintesi, competenze, formazione):
         self.curriculum = Helper.get_all_curriculum()
