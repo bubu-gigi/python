@@ -1,5 +1,5 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit
+from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit, QDesktopWidget
 
 from Gestori.GestoreAttivita import GestoreAttivita
 
@@ -17,7 +17,8 @@ class AttivitaForm(QDialog):
             self.last_id = 0
 
         loadUi("./GUILayout/attivita_form.ui", self)
-        self.setWindowTitle("Edit Models")
+        self.setWindowTitle("Attivita Form")
+        self.center()
 
         self.save = self.findChild(QPushButton, "button_save_attivita")
         self.delete = self.findChild(QPushButton, "button_delete_attivita")
@@ -40,6 +41,12 @@ class AttivitaForm(QDialog):
         self.save.clicked.connect(self.handle_save_click)
         self.delete.clicked.connect(self.handle_delete_click)
         self.cancel.clicked.connect(self.handle_cancel_click)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def handle_cancel_click(self):
         self.close()

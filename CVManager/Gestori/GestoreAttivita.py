@@ -43,7 +43,7 @@ class GestoreAttivita:
         attivita.set_progetto(progetto)
         attivita.set_descrizione(descrizione)
         attivita.set_periodo(periodo)
-        check_if_attivita_exixsts = self.__ricerca_attivita(curriculum_matricola, id)
+        check_if_attivita_exixsts = self.ricerca_attivita(curriculum_matricola, id)
         if check_if_attivita_exixsts is not None:
             self.attivita[attivita.get_curriculum_matricola(), attivita.get_id()] = attivita
             with open('Dati/Attivita.pickle', 'wb') as f:
@@ -51,7 +51,7 @@ class GestoreAttivita:
 
     def rimuovi_attivita(self, curriculum_matricola, id):
         self.attivita = Helper.get_all_attivita()
-        check_if_attivita_exixsts = self.__ricerca_attivita(curriculum_matricola, id)
+        check_if_attivita_exixsts = self.ricerca_attivita(curriculum_matricola, id)
         if check_if_attivita_exixsts is not None:
             del self.attivita[curriculum_matricola, id]
             with open('Dati/Attivita.pickle', 'wb') as f:

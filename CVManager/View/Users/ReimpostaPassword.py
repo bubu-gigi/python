@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QDialog, QLineEdit, QPushButton, QMessageBox, QDesktopWidget
 from PyQt5.uic import loadUi
 
 from Gestori.GestoreUsers import GestoreUsers
@@ -6,12 +6,14 @@ from Gestori.Helper import Helper
 
 
 class ReimpostaPassword(QDialog):
-    def __init__(self, parent=None):
-        super(ReimpostaPassword, self).__init__(parent)
+    def __init__(self):
+        super(ReimpostaPassword, self).__init__()
         self.login = None
         loadUi("./GUILayout/reimposta_password.ui", self)
-        #valutare se serve la lista deli user o in generale
         self.gestore_users = GestoreUsers()
+
+        self.setWindowTitle("Reimposta Password")
+        self.center()
 
         self.line_username = self.findChild(QLineEdit, "username")
         self.line_vecchia_password = self.findChild(QLineEdit, "vecchia_password")
@@ -24,11 +26,17 @@ class ReimpostaPassword(QDialog):
         self.button_save_password.clicked.connect(self.handle_save_password_click)
         self.button_cancel.clicked.connect(self.handle_cancel_click)
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def handle_cancel_click(self):
         from View.Users.Login import Login
         self.login = Login()
-        self.login.show()
         self.close()
+        return self.login.show()
 
     def handle_save_password_click(self):
         feedback = self.gestore_users.reimposta_password(self.line_username.text(), self.line_vecchia_password.text(), self.line_nuova_password.text(), self.line_conferma_password.text())
@@ -43,7 +51,7 @@ class ReimpostaPassword(QDialog):
         else:
             from View.Users.Login import Login
             self.login = Login()
-            self.login.show()
             self.close()
+            return self.login.show()
 
 

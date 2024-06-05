@@ -1,8 +1,7 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit
+from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit, QDesktopWidget
 
 from Gestori.GestoreCurriculum import GestoreCurriculum
-from Models.Attivita import Attivita
 from View.Attivita.AttivitaTable import AttivitaTable
 
 from View.Lingue.LingueTable import LingueTable
@@ -21,7 +20,8 @@ class CurriculumForm(QDialog):
         self.role = role
 
         loadUi("./GUILayout/curricula_form.ui", self)
-        self.setWindowTitle("Edit Curriculum")
+        self.setWindowTitle("Curriculum Form")
+        self.center()
 
         self.save = self.findChild(QPushButton, "button_save_curricula")
         self.lingua = self.findChild(QPushButton, "button_show_lingue")
@@ -29,13 +29,13 @@ class CurriculumForm(QDialog):
         self.cancel = self.findChild(QPushButton, "button_cancel_curricula")
         self.generate = self.findChild(QPushButton, "button_generate_curricula")
 
-        if curriculum is None:
+        if self.curriculum is None:
             self.lingua.hide()
             self.attivita.hide()
             self.generate.hide()
 
         if self.role == "dipendente":
-            self.cancel.hide()
+            self.generate.hide()
 
         self.funzione = self.findChild(QLineEdit, "funzione")
         self.esperienza = self.findChild(QLineEdit, "esperienza")
@@ -56,11 +56,17 @@ class CurriculumForm(QDialog):
         self.cancel.clicked.connect(self.handle_cancel_click)
         self.generate.clicked.connect(self.handle_generate_click)
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def handle_cancel_click(self):
         from View.Dipendenti.DipendenteForm import DipendenteForm
         self.dipendente_form = DipendenteForm(dipendente=self.dipendente)
-        self.dipendente_form.show()
         self.close()
+        return self.dipendente_form.show()
 
     def handle_save_click(self):
         lines_children = self.findChildren(QLineEdit)
@@ -92,19 +98,18 @@ class CurriculumForm(QDialog):
                                                formazione=self.formazione.toPlainText())
         from View.Dipendenti.DipendenteForm import DipendenteForm
         self.dipendente_form = DipendenteForm(dipendente=self.dipendente)
-        self.dipendente_form.show()
         self.close()
+        return self.dipendente_form.show()
 
     def handle_lingue_click(self):
         self.lingue_table = LingueTable(curriculum=self.curriculum, dipendente=self.dipendente)
-        self.lingue_table.show()
         self.close()
+        return self.lingue_table.show()
 
     def handle_attivita_click(self):
         self.attivita_table = AttivitaTable(curriculum=self.curriculum, dipendente=self.dipendente)
-        self.attivita_table.show()
         self.close()
-
+        return self.attivita_table.show()
 
     def handle_generate_click(self):
         self.gestore_curriculum.generate_curriculum(curriculum=self.curriculum, dipendente=self.dipendente)

@@ -1,5 +1,6 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QCheckBox, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QCheckBox, QLineEdit, QComboBox, \
+    QDesktopWidget
 
 from Gestori.GestoreFiltri import GestoreFiltri
 from Models.Filters.FiltriDipendenti import FiltriDipendenti
@@ -9,14 +10,17 @@ from View.Users.UserForm import UserForm
 
 
 class DipendentiTable(QMainWindow):
-    def __init__(self, parent=None):
-        super(DipendentiTable, self).__init__(parent)
+    def __init__(self):
+        super(DipendentiTable, self).__init__()
         self.login = None
         self.edit_user = None
         self.find_user = None
         self.dipendenti_form = None
         self.progetti_table = None
         loadUi("./GUILayout/dipendenti_table.ui", self)
+
+        self.setWindowTitle("Dipendenti Table")
+        self.center()
 
         self.dipendenti = []
         self.filtri = FiltriDipendenti()
@@ -72,6 +76,12 @@ class DipendentiTable(QMainWindow):
 
         self.update_ui()
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
 
     def handle_azzera_filtri_click(self):
         self.search.setText("")
@@ -82,7 +92,7 @@ class DipendentiTable(QMainWindow):
 
     def handle_new_dipendente_click(self):
         self.dipendenti_form = DipendenteForm(callback=self.update_ui, dipendente=None, role="admin")
-        self.dipendenti_form.show()
+        return self.dipendenti_form.show()
 
     def handle_aggiorna_dipendente_click(self):
         r = self.table.currentRow()
@@ -94,7 +104,7 @@ class DipendentiTable(QMainWindow):
                     dipendente_selected = dipendente
             if dipendente_selected is not None:
                 self.dipendenti_form = DipendenteForm(callback=self.update_ui, dipendente=dipendente_selected, role="admin")
-                self.dipendenti_form.show()
+                return self.dipendenti_form.show()
 
     def update_ui(self):
         self.handle_filters()
@@ -126,22 +136,22 @@ class DipendentiTable(QMainWindow):
     def handle_progetti_click(self):
         from View.Progetti.ProgettiTable import ProgettiTable
         self.progetti_table = ProgettiTable()
-        self.progetti_table.show()
         self.close()
+        return self.progetti_table.show()
 
     def handle_edit_user_click(self):
         self.find_user = RicercaUser()
-        self.find_user.show()
+        return self.find_user.show()
 
     def handle_crea_user_click(self):
         self.edit_user = UserForm()
-        self.edit_user.show()
+        return self.edit_user.show()
         
     def handle_logout_click(self):
         from View.Users.Login import Login
         self.login = Login()
-        self.login.show()
         self.close()
+        return self.login.show()
 
 
 

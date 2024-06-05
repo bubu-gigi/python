@@ -1,6 +1,7 @@
 from Gestori.GestoreProgetti import GestoreProgetti
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit, QComboBox, QListWidget
+from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QTextEdit, QComboBox, QListWidget, \
+    QDesktopWidget
 
 from Gestori.Helper import Helper
 from View.Dipendenti.RicercaDipendente import RicercaDipendente
@@ -17,7 +18,8 @@ class ProgettoForm(QDialog):
         self.callback = callback
         self.progetto = progetto
         loadUi("./GUILayout/progetto_form.ui", self)
-        self.setWindowTitle("Edit Progetto")
+        self.setWindowTitle("Progetto Form")
+        self.center()
 
         self.save = self.findChild(QPushButton, "button_save_progetto_form")
         self.delete = self.findChild(QPushButton, "button_delete_progetto_form")
@@ -65,6 +67,12 @@ class ProgettoForm(QDialog):
         self.save.clicked.connect(self.handle_save_click)
         self.cancel.clicked.connect(self.handle_cancel_click)
         self.delete.clicked.connect(self.handle_delete_click)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 
     def handle_add_dipendente_click(self):

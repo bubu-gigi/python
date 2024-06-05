@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QTableWidgetItem, QDesktopWidget
 from PyQt5.uic import loadUi
 
 from Gestori.GestoreCurriculum import GestoreCurriculum
@@ -11,6 +11,9 @@ class LingueTable(QWidget):
         self.lingua_form = None
         self.curricula_form = None
         loadUi("./GUILayout/lingue_table.ui", self)
+
+        self.setWindowTitle("Lingue Table")
+        self.center()
 
         self.gestore_curriculum = GestoreCurriculum()
 
@@ -37,6 +40,12 @@ class LingueTable(QWidget):
 
         self.update_ui()
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def handle_aggiungi_click(self):
         self.lingue = self.gestore_curriculum.ricerca_curriculum_lingue(self.curriculum.get_dipendente_matricola())
         last_id = None
@@ -46,7 +55,7 @@ class LingueTable(QWidget):
                 ids.append(int(lingua.get_id()))
             last_id = max(ids)
         self.lingua_form = LinguaForm(callback=self.update_ui, curriculum_matricola=self.curriculum.get_dipendente_matricola(), lingua=None, last_id=last_id)
-        self.lingua_form.show()
+        return self.lingua_form.show()
 
     def handle_aggiorna_click(self):
         r = self.table.currentRow()
@@ -57,13 +66,13 @@ class LingueTable(QWidget):
                     lingua_selected = lingua
             if lingua_selected is not None:
                 self.lingua_form = LinguaForm(callback=self.update_ui, curriculum_matricola=self.curriculum.get_dipendente_matricola(), lingua=lingua_selected, last_id=None)
-                self.lingua_form.show()
+                return self.lingua_form.show()
 
     def handle_cancel_click(self):
         from View.Curriculum.CurriculumForm import CurriculumForm
         self.curricula_form = CurriculumForm(dipendente=self.dipendente, curriculum=self.curriculum)
-        self.curricula_form.show()
         self.close()
+        return self.curricula_form.show()
 
     def update_ui(self):
         self.lingue = self.gestore_curriculum.ricerca_curriculum_lingue(self.curriculum.get_dipendente_matricola())

@@ -1,11 +1,11 @@
 
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QMessageBox, QDialog
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QMessageBox, QDialog, QDesktopWidget
 from PyQt5.uic import loadUi
 
 from Gestori.GestoreUsers import GestoreUsers
 
 class UserForm(QDialog):
-    def __init__(self, parent=None, user=None):
+    def __init__(self, user=None):
         super(UserForm, self).__init__(parent)
 
         loadUi("./GUILayout/crea_user.ui", self)
@@ -15,6 +15,9 @@ class UserForm(QDialog):
         self.line_username = self.findChild(QLineEdit, "username")
         self.line_password = self.findChild(QLineEdit, "password")
         self.line_role = self.findChild(QLineEdit, "role")
+
+        self.setWindowTitle("User Form")
+        self.center()
 
         self.button_cancel = self.findChild(QPushButton, "button_cancel_user")
         self.button_delete = self.findChild(QPushButton, "button_delete_user")
@@ -31,6 +34,12 @@ class UserForm(QDialog):
         self.button_cancel.clicked.connect(self.handle_cancel_click)
         self.button_delete.clicked.connect(self.handle_delete_click)
         self.button_save.clicked.connect(self.handle_save_click)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def handle_cancel_click(self):
         self.close()

@@ -38,7 +38,7 @@ class GestoreCurriculum:
             return attivita_list_returned
 
     def __aggiungi_attivita_alla_lista(self, attivita_list, attivita):
-        attivita_list = attivita_list.append(attivita)
+        attivita_list.append(attivita)
         return attivita_list
 
     def ricerca_curriculum_lingue(self, dipendente_matricola: int):
@@ -54,7 +54,7 @@ class GestoreCurriculum:
             return lingue_list_returned
 
     def __aggiungi_lingua_alla_lista(self, lingue_list, lingua):
-        lingue_list = lingue_list.append(lingua)
+        lingue_list.append(lingua)
         return lingue_list
 
     def salva_curriculum(self, dipendente_matricola, funzione, esperienza, sintesi, competenze, formazione):

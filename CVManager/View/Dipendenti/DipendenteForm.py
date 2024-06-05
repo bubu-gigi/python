@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QComboBox
+from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QMessageBox, QComboBox, QDesktopWidget
 
 from Gestori.GestoreCurriculum import GestoreCurriculum
 from Gestori.GestoreDipendenti import GestoreDipendenti
@@ -22,7 +22,8 @@ class DipendenteForm(QDialog):
         self.dipendente = dipendente
         self.role = role
         loadUi("./GUILayout/dipendenti_form.ui", self)
-        self.setWindowTitle("Edit Dipendente")
+        self.setWindowTitle("Dipendente Form")
+        self.center()
 
         self.ok = self.findChild(QPushButton, "button_save")
         self.curriculum = self.findChild(QPushButton, "button_curricula")
@@ -34,8 +35,8 @@ class DipendenteForm(QDialog):
             self.curriculum.hide()
 
         if role == "dipendente":
-            self.cancel.hide()
             self.delete.hide()
+
 
         self.matricola = self.findChild(QLineEdit, "dip_matricola")
         self.nome = self.findChild(QLineEdit, "dip_nome")
@@ -84,6 +85,12 @@ class DipendenteForm(QDialog):
         self.curriculum.clicked.connect(self.handle_curriculum_click)
         self.cancel.clicked.connect(self.handle_cancel_click)
         self.delete.clicked.connect(self.handle_delete_click)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def handle_save_click(self):
         try:
@@ -146,5 +153,6 @@ class DipendenteForm(QDialog):
         gestore_curriculum = GestoreCurriculum()
         curriculum = gestore_curriculum.ricerca_curriculum(self.dipendente.get_matricola())
         self.curriculum_form = CurriculumForm(dipendente=self.dipendente, curriculum=curriculum)
-        self.curriculum_form.show()
         self.close()
+        return self.curriculum_form.show()
+

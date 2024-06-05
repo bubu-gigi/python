@@ -1,5 +1,7 @@
 import pickle
 
+from PyQt5.QtWidgets import QMessageBox
+
 from Gestori.Helper import Helper
 
 class GestoreUsers:
@@ -65,5 +67,32 @@ class GestoreUsers:
         user.set_password(nuova_password)
         self.modifica_user(user.get_username(), user.get_password(), user.get_role())
         return "ok"
+
+    def login(self, username, password):
+        self.users = Helper.get_all_users()
+        self.dipendenti = Helper.get_all_dipendenti()
+
+        if username == "admin" and password == "R01mkWgY":
+            return "admin"
+        if self.users is None or len(self.users) <= 0 or len(self.dipendenti) <= 0 or self.dipendenti is None:
+            return "ko"
+        else:
+            for user in self.users.values():
+                u = user.get_username()
+                p = user.get_password()
+                if u == username and p == password:
+                    if user.get_role() == "admin":
+                        return "admin"
+                    else:
+                        matricola = username[-3:]
+                        while matricola.startswith("0"):
+                            matricola = matricola[1:]
+                        if username == password:
+                            return "dip first login"
+                        for dipendente in self.dipendenti.values():
+                            if int(dipendente.get_matricola()) == int(matricola):
+                                return dipendente
+            return "ko"
+
 
 

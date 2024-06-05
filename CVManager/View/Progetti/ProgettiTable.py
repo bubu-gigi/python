@@ -1,5 +1,5 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QPushButton, QTableWidget, QTableWidgetItem, QLineEdit, QComboBox, QWidget
+from PyQt5.QtWidgets import QPushButton, QTableWidget, QTableWidgetItem, QLineEdit, QComboBox, QWidget, QDesktopWidget
 
 from Gestori.GestoreFiltri import GestoreFiltri
 from Models.Filters.FiltriProgetti import FiltriProgetti
@@ -9,12 +9,15 @@ from View.Users.UserForm import UserForm
 
 
 class ProgettiTable(QWidget):
-    def __init__(self, parent=None):
-        super(ProgettiTable, self).__init__(parent)
+    def __init__(self):
+        super(ProgettiTable, self).__init__()
         self.login = None
         self.progetto_form = None
         self.dipendenti_table = None
         loadUi("./GUILayout/progetti_table.ui", self)
+
+        self.setWindowTitle("Progetti Table")
+        self.center()
 
         self.progetti = []
         self.filtri = FiltriProgetti()
@@ -64,6 +67,12 @@ class ProgettiTable(QWidget):
 
         self.update_ui()
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
 
     def handle_azzera_filtri_click(self):
         self.search.setText("")
@@ -73,7 +82,7 @@ class ProgettiTable(QWidget):
 
     def handle_aggiungi_progetto_click(self):
         self.progetto_form = ProgettoForm(callback=self.update_ui, progetto=None)
-        self.progetto_form.show()
+        return self.progetto_form.show()
 
     def handle_aggiorna_progetto_click(self):
         r = self.table.currentRow()
@@ -86,7 +95,7 @@ class ProgettiTable(QWidget):
             if progetto_selected != None:
                 pass
                 self.progetto_form = ProgettoForm(callback=self.update_ui, progetto=progetto_selected)
-                self.progetto_form.show()
+                return self.progetto_form.show()
 
     def update_ui(self):
         self.handle_filters()
@@ -110,20 +119,20 @@ class ProgettiTable(QWidget):
     def handle_dipendenti_click(self):
         from View.Dipendenti.DipendentiTable import DipendentiTable
         self.dipendenti_table = DipendentiTable()
-        self.dipendenti_table.show()
         self.close()
+        return self.dipendenti_table.show()
         
     def handle_logout_click(self):
         from View.Users.Login import Login
         self.login = Login()
-        self.login.show()
         self.close()
+        return self.login.show()
 
     def handle_edit_user_click(self):
         self.find_user = RicercaUser()
-        self.find_user.show()
+        return self.find_user.show()
 
     def handle_crea_user_click(self):
         self.edit_user = UserForm()
-        self.edit_user.show()
+        return self.edit_user.show()
 

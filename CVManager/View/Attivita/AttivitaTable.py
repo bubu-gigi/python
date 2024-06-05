@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QTableWidgetItem, QDesktopWidget
 from PyQt5.uic import loadUi
 
 from Gestori.GestoreCurriculum import GestoreCurriculum
@@ -11,6 +11,9 @@ class AttivitaTable(QWidget):
         self.curriculum_form = None
         self.attivita_form = None
         loadUi("./GUILayout/attivita_table.ui", self)
+
+        self.setWindowTitle("Attivita Table")
+        self.center()
 
         self.curriculum = curriculum
         self.dipendente = dipendente
@@ -36,6 +39,12 @@ class AttivitaTable(QWidget):
 
         self.update_ui()
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
     def handle_aggiungi_click(self):
         self.attivita = self.gestore_curriculum.ricerca_curriculum_attivita(self.curriculum.get_dipendente_matricola())
         last_id = None
@@ -45,7 +54,7 @@ class AttivitaTable(QWidget):
                 ids.append(int(attivita.get_id()))
             last_id = max(ids)
         self.attivita_form = AttivitaForm(callback=self.update_ui, curriculum_matricola=self.curriculum.get_dipendente_matricola(), attivita=None, last_id=last_id)
-        self.attivita_form.show()
+        return self.attivita_form.show()
 
     def handle_aggiorna_click(self):
         r = self.table.currentRow()
@@ -56,13 +65,13 @@ class AttivitaTable(QWidget):
                     attivita_selected = attivita
             if attivita_selected is not None:
                 self.attivita_form = AttivitaForm(callback=self.update_ui, curriculum_matricola=self.curriculum.get_dipendente_matricola(), attivita=attivita_selected, last_id=None)
-                self.attivita_form.show()
+                return self.attivita_form.show()
 
     def handle_cancel_click(self):
         from View.Curriculum.CurriculumForm import CurriculumForm
         self.curriculum_form = CurriculumForm(dipendente=self.dipendente, curriculum=self.curriculum)
-        self.curriculum_form.show()
         self.close()
+        return self.curriculum_form.show()
 
     def update_ui(self):
         self.attivita = self.gestore_curriculum.ricerca_curriculum_attivita(self.curriculum.get_dipendente_matricola())
