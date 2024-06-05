@@ -16,4 +16,4 @@ Esempio
 
 Da notare come le cifre devono essere sempre 3, in caso di numeri sotto il 100 occorre mettere degli zero davanti.
 
-In questo modo il sistema è in grado di identificare la matricola e saprà indirizzare correttamente il dipendente nella sua sezioni dati personale.
+In questo modo il sistema è in grado di identificare la matricola e saprà indirizzare correttamente il dipendente nella sua sezione personale.
